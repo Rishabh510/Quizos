@@ -1,13 +1,6 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { TezosToolkit, WalletContract } from "@taquito/taquito";
-
-interface QuizboardProps {
-  contract: WalletContract | any;
-  setUserBalance: Dispatch<SetStateAction<any>>;
-  Tezos: TezosToolkit;
-  userAddress: string;
-  setStorage: Dispatch<SetStateAction<number>>;
-}
+import { QuizboardProps } from "../types";
 
 const Quizboard = ({
   contract,
@@ -27,7 +20,7 @@ const Quizboard = ({
       await op.confirmation();
       const newStorage: any = await contract.storage();
       console.log("[DEBUG]:", newStorage);
-      if (newStorage) setStorage(newStorage.toNumber());
+      // if (newStorage) setStorage(newStorage.toNumber());
       setUserBalance(await Tezos.tz.getBalance(userAddress));
     } catch (error) {
       console.log(error);
@@ -42,7 +35,7 @@ const Quizboard = ({
       const op = await contract.methods.decrement(1).send();
       await op.confirmation();
       const newStorage: any = await contract.storage();
-      if (newStorage) setStorage(newStorage.toNumber());
+      // if (newStorage) setStorage(newStorage.toNumber());
       setUserBalance(await Tezos.tz.getBalance(userAddress));
     } catch (error) {
       console.log(error);

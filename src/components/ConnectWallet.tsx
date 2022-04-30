@@ -1,27 +1,15 @@
-import React, { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { TezosToolkit } from "@taquito/taquito";
+import { Dispatch, SetStateAction, useState, useEffect } from "react";
+import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
+import { BigNumber } from "bignumber.js";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import {
   NetworkType,
   BeaconEvent,
-  defaultEventCallbacks
+  defaultEventCallbacks,
 } from "@airgap/beacon-sdk";
 import TransportU2F from "@ledgerhq/hw-transport-u2f";
 import { LedgerSigner } from "@taquito/ledger-signer";
-
-type ButtonProps = {
-  Tezos: TezosToolkit;
-  setContract: Dispatch<SetStateAction<any>>;
-  setWallet: Dispatch<SetStateAction<any>>;
-  setUserAddress: Dispatch<SetStateAction<string>>;
-  setUserBalance: Dispatch<SetStateAction<number>>;
-  setStorage: Dispatch<SetStateAction<number>>;
-  contractAddress: string;
-  setBeaconConnection: Dispatch<SetStateAction<boolean>>;
-  setPublicToken: Dispatch<SetStateAction<string | null>>;
-  wallet: BeaconWallet;
-  rpcUrl: string;
-};
+import { StorageData, ButtonProps } from "../types";
 
 const ConnectButton = ({
   Tezos,
@@ -34,7 +22,7 @@ const ConnectButton = ({
   setBeaconConnection,
   setPublicToken,
   wallet,
-  rpcUrl
+  rpcUrl,
 }: ButtonProps): JSX.Element => {
   const [loadingNano, setLoadingNano] = useState<boolean>(false);
 
@@ -47,7 +35,27 @@ const ConnectButton = ({
     const contract = await Tezos.wallet.at(contractAddress);
     const storage: any = await contract.storage();
     setContract(contract);
-    setStorage(storage.toNumber());
+    let mydata: StorageData = {
+      admin: storage.admin,
+      askAmt: storage.askAmt.toNumber(),
+      questions: storage.questions,
+      voters: storage.voters,
+      voteAmt: storage.voteAmt.toNumber(),
+    };
+    console.log("[DEB]:", storage, typeof storage);
+    // for voters
+    // let votees = new Map();
+    // mydata.voters.forEach((val: any, key: any) => {
+    //   votees.set(key, new Set(val));
+    // });
+    // console.log(votees.get("1"));
+
+    // for questions
+    // let foreachPairs = new Map();
+    // mydata.questions.forEach((val: any, key: any) => {
+    //   foreachPairs.set(key, [val[0].toNumber(), val[1]]);
+    // });
+    setStorage(mydata);
   };
 
   const connectWallet = async (): Promise<void> => {
@@ -72,9 +80,7 @@ const ConnectButton = ({
       setLoadingNano(true);
       const transport = await TransportU2F.create();
       const ledgerSigner = new LedgerSigner(transport, "44'/1729'/0'/0'", true);
-
       Tezos.setSignerProvider(ledgerSigner);
-
       //Get the public key and the public key hash from the Ledger
       const userAddress = await Tezos.signer.publicKeyHash();
       await setup(userAddress);
