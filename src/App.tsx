@@ -11,6 +11,7 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Quizboard from "./components/Quizboard";
 import { StorageData } from "./types";
+import { Line } from "rc-progress";
 
 enum BeaconConnection {
   NONE = "",
@@ -40,6 +41,57 @@ const App = () => {
     qr.make();
     return { __html: qr.createImgTag(4) };
   };
+
+  function renderQuizboard(
+    questions: MichelsonMap<any, any>,
+    voters: MichelsonMap<any, any>
+  ) {
+    let foreachPairs: any[] = [];
+    questions.forEach((val: any, key: any) => {
+      let votes: any = { true: 0, false: 0 };
+      let done = false;
+      if (voters.has(key)) {
+        let temp = voters.get(key);
+        for (let x of temp) {
+          done = done || userAddress === x[0];
+          votes[x[1]]++;
+        }
+      }
+      foreachPairs.push([key, val[0].toNumber(), val[1], done, votes]);
+    });
+
+    return (
+      <div>
+        {foreachPairs.map((ele) => {
+          return (
+            <div key={ele[0]}>
+              <p>{`Q${ele[0]}. ${ele[2]}`}</p>
+              <h5>{`Prize Pool: ${ele[1] / 1000000} ꜩ`}</h5>
+              {voters.has(ele[0].toString()) ? (
+                <span>
+                  <b>{`Yes (${ele[4]["true"]})`}</b>
+                  <button disabled={ele[3]}>TEST</button>
+                  <b>{`No (${ele[4]["false"]})`}</b>
+                  <Line
+                    percent={
+                      (ele[4]["true"] * 100) /
+                      (ele[4]["true"] + ele[4]["false"])
+                    }
+                    strokeWidth={2}
+                    trailWidth={2}
+                    strokeColor="green"
+                    trailColor="red"
+                  />
+                </span>
+              ) : (
+                <h5>No voters</h5>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
 
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (
@@ -122,6 +174,8 @@ const App = () => {
             ) : (
               <div id="increment-decrement">
                 <h3 className="text-align-center">
+                  {storage &&
+                    renderQuizboard(storage.questions, storage.voters)}
                   {/* Storage: <span>{storage}</span> */}
                 </h3>
                 <Quizboard
@@ -170,12 +224,6 @@ const App = () => {
       <div className="main-box">
         <div className="title">
           <Header />
-          <a href="https://app.netlify.com/start/deploy?repository=https://github.com/ecadlabs/taquito-boilerplate">
-            <img
-              src="https://www.netlify.com/img/deploy/button.svg"
-              alt="netlify-button"
-            />
-          </a>
         </div>
         <div id="dialog">
           <header>Answer Yes/No questions & win crypto!</header>
