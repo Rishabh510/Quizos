@@ -1,6 +1,7 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { TezosToolkit, WalletContract } from "@taquito/taquito";
 import { QuizboardProps, StorageData } from "../types";
+import { CONTRACT } from "../constants";
 
 const Quizboard = ({
   contract,
@@ -12,10 +13,10 @@ const Quizboard = ({
   const [loadingYes, setLoadingYes] = useState<boolean>(false);
   const [loadingNo, setLoadingNo] = useState<boolean>(false);
 
-  const voteYes = async (): Promise<void> => {
+  const voteYes = async (qId: number): Promise<void> => {
     setLoadingYes(true);
     try {
-      const op = await contract.methods.increment(1).send();
+      const op = await contract.methods.add_vote(true, qId).send({ amount: 1 });
       console.log("[DEBUG]:", op);
       await op.confirmation();
       const newStorage: any = await contract.storage();
@@ -35,10 +36,12 @@ const Quizboard = ({
     }
   };
 
-  const voteNo = async (): Promise<void> => {
+  const voteNo = async (qId: number): Promise<void> => {
     setLoadingNo(true);
     try {
-      const op = await contract.methods.decrement(1).send();
+      const op = await contract.methods
+        .add_vote(false, qId, 1)
+        .send({ amount: 1 });
       await op.confirmation();
       const newStorage: any = await contract.storage();
       let mydata: StorageData = {
@@ -63,7 +66,7 @@ const Quizboard = ({
       <button
         className="button"
         disabled={loadingYes || loadingNo}
-        onClick={voteYes}
+        onClick={() => voteYes(1)}
       >
         {loadingYes ? (
           <span>
@@ -78,7 +81,7 @@ const Quizboard = ({
       <button
         className="button"
         disabled={loadingNo || loadingYes}
-        onClick={voteNo}
+        onClick={() => voteNo(1)}
       >
         {loadingNo ? (
           <span>

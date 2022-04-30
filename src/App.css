@@ -37,6 +37,7 @@ header {
 
 #dialog {
   display: flex;
+  margin: auto;
   flex-direction: column;
   width: 500px;
   border: 1px solid #35636e;
