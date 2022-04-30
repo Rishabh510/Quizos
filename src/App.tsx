@@ -1,15 +1,16 @@
 import { useState } from "react";
-import { TezosToolkit } from "@taquito/taquito";
+import { MichelsonMap, TezosToolkit } from "@taquito/taquito";
 import "./App.css";
+import { BigNumber } from "bignumber.js";
 import { NETWORK, RPC_URL, CONTRACT_ADDRESS, CONTRACT } from "./constants";
 import ConnectButton from "./components/ConnectWallet";
 import DisconnectButton from "./components/DisconnectWallet";
-import UpdateContract from "./components/UpdateContract";
 import Transfers from "./components/Transfers";
 import qrcode from "qrcode-generator";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Quizboard from "./components/Quizboard";
+import { StorageData } from "./types";
 
 enum BeaconConnection {
   NONE = "",
@@ -26,12 +27,12 @@ const App = () => {
   const [wallet, setWallet] = useState<any>(null);
   const [userAddress, setUserAddress] = useState<string>("");
   const [userBalance, setUserBalance] = useState<number>(0);
-  const [storage, setStorage] = useState<number>(0);
+  const [storage, setStorage] = useState<any>();
   const [copiedPublicToken, setCopiedPublicToken] = useState<boolean>(false);
   const [beaconConnection, setBeaconConnection] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<string>("contract");
 
-  const contractAddress: string = CONTRACT_ADDRESS;
+  const contractAddress: string = CONTRACT;
 
   const generateQrCode = (): { __html: string } => {
     const qr = qrcode(0, "L");
@@ -121,9 +122,9 @@ const App = () => {
             ) : (
               <div id="increment-decrement">
                 <h3 className="text-align-center">
-                  Current counter: <span>{storage}</span>
+                  {/* Storage: <span>{storage}</span> */}
                 </h3>
-                <UpdateContract
+                <Quizboard
                   contract={contract}
                   setUserBalance={setUserBalance}
                   Tezos={Tezos}
