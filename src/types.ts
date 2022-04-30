@@ -31,4 +31,5 @@ export interface QuizboardProps {
   Tezos: TezosToolkit;
   userAddress: string;
   setStorage: Dispatch<SetStateAction<StorageData>>;
+  storage: any;
 }

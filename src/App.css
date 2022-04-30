@@ -13,7 +13,7 @@ body,
 }
 
 .main-box {
-  margin: 2em 10vw;
+  margin: 2em 25vw;
 }
 
 .title {
@@ -23,15 +23,26 @@ body,
   align-items: center;
 }
 
+.question {
+  display: flex;
+  justify-content: space-between;
+  font-size: large;
+}
 h1 {
-  color: #35636e;
+  color: purple;
   text-align: left;
 }
 
+h3 {
+  color: purple;
+  text-align: center;
+  font-style: italic;
+  text-decoration-line: underline;
+}
 header {
   font-size: 1.5rem;
   padding: 20px;
-  background-color: #35636e;
+  background-color: purple;
   color: white;
 }
 
@@ -39,15 +50,15 @@ header {
   display: flex;
   margin: auto;
   flex-direction: column;
-  width: 500px;
-  border: 1px solid #35636e;
-  border-radius: 3px;
+  /* width: 500px; */
+  border: 2px solid purple;
+  border-radius: 10px;
 }
 
 #content {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 2rem;
 }
 
 #footer {
@@ -66,23 +77,34 @@ header {
 .button {
   margin-top: 0px;
   margin-bottom: 5px;
-  color: #35636e;
+  color: purple;
   font-size: 1rem;
   padding: 15px;
   background-color: white;
   border-radius: 3px;
-  border: solid 2px #35636e;
+  border: solid 2px purple;
   outline: none;
   cursor: pointer;
   transition: 0.2s;
 }
 .button:hover {
   color: white;
-  background-color: #35636e;
+  background-color: purple;
 }
 .button:active {
   margin-top: 5px;
   margin-bottom: 0px;
+}
+.button:disabled {
+  border: solid 2px white;
+  color: white;
+  background-color: grey;
+}
+
+.button:disabled:hover {
+  border: solid 2px black;
+  color: black;
+  background-color: black;
 }
 
 #public-token {
@@ -100,7 +122,7 @@ header {
 #public-token-copy:hover {
   border-radius: 3px;
   color: white;
-  background-color: #35636e;
+  background-color: purple;
 }
 
 .text-align-center {
@@ -120,7 +142,7 @@ a:hover {
   flex-direction: row;
   justify-content: space-around;
   border: none;
-  color: #35636e;
+  color: purple;
   margin: 0px;
   transition: 0.3s;
 }
@@ -129,7 +151,7 @@ a:hover {
   width: 80%;
   padding: 20px;
   margin: 0px 10px;
-  border: solid 1px #35636e;
+  border: solid 1px purple;
   border-bottom: none;
   text-align: center;
   border-top-left-radius: 3px;
@@ -138,7 +160,7 @@ a:hover {
 }
 
 #tabs div.active {
-  background-color: #35636e;
+  background-color: purple;
   color: white;
 }
 
@@ -154,7 +176,7 @@ a:hover {
   padding: 15px;
   border-top-left-radius: 3px;
   border-bottom-left-radius: 3px;
-  border: solid 2px #35636e;
+  border: solid 2px purple;
   outline: none;
   font-size: 1rem;
   border-right: none;
@@ -165,7 +187,7 @@ a:hover {
 #transfer-inputs input[type="number"] {
   padding: 15px;
   width: 60px;
-  border: solid 2px #35636e;
+  border: solid 2px purple;
   border-top-right-radius: 3px;
   border-bottom-right-radius: 3px;
   border-left: none;
@@ -184,7 +206,6 @@ input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
-
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;

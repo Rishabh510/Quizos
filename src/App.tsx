@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { MichelsonMap, TezosToolkit } from "@taquito/taquito";
+import { TezosToolkit } from "@taquito/taquito";
 import "./App.css";
-import { BigNumber } from "bignumber.js";
-import { NETWORK, RPC_URL, CONTRACT_ADDRESS, CONTRACT } from "./constants";
+import { NETWORK, RPC_URL, CONTRACT } from "./constants";
 import ConnectButton from "./components/ConnectWallet";
 import DisconnectButton from "./components/DisconnectWallet";
 import Transfers from "./components/Transfers";
@@ -10,8 +9,6 @@ import qrcode from "qrcode-generator";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Quizboard from "./components/Quizboard";
-import { StorageData } from "./types";
-import { Line } from "rc-progress";
 
 enum BeaconConnection {
   NONE = "",
@@ -31,9 +28,7 @@ const App = () => {
   const [storage, setStorage] = useState<any>();
   const [copiedPublicToken, setCopiedPublicToken] = useState<boolean>(false);
   const [beaconConnection, setBeaconConnection] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<string>("contract");
-
-  const contractAddress: string = CONTRACT;
+  const [activeTab, setActiveTab] = useState<string>("transfer");
 
   const generateQrCode = (): { __html: string } => {
     const qr = qrcode(0, "L");
@@ -41,57 +36,6 @@ const App = () => {
     qr.make();
     return { __html: qr.createImgTag(4) };
   };
-
-  function renderQuizboard(
-    questions: MichelsonMap<any, any>,
-    voters: MichelsonMap<any, any>
-  ) {
-    let foreachPairs: any[] = [];
-    questions.forEach((val: any, key: any) => {
-      let votes: any = { true: 0, false: 0 };
-      let done = false;
-      if (voters.has(key)) {
-        let temp = voters.get(key);
-        for (let x of temp) {
-          done = done || userAddress === x[0];
-          votes[x[1]]++;
-        }
-      }
-      foreachPairs.push([key, val[0].toNumber(), val[1], done, votes]);
-    });
-
-    return (
-      <div>
-        {foreachPairs.map((ele) => {
-          return (
-            <div key={ele[0]}>
-              <p>{`Q${ele[0]}. ${ele[2]}`}</p>
-              <h5>{`Prize Pool: ${ele[1] / 1000000} ꜩ`}</h5>
-              {voters.has(ele[0].toString()) ? (
-                <span>
-                  <b>{`Yes (${ele[4]["true"]})`}</b>
-                  <button disabled={ele[3]}>TEST</button>
-                  <b>{`No (${ele[4]["false"]})`}</b>
-                  <Line
-                    percent={
-                      (ele[4]["true"] * 100) /
-                      (ele[4]["true"] + ele[4]["false"])
-                    }
-                    strokeWidth={2}
-                    trailWidth={2}
-                    strokeColor="green"
-                    trailColor="red"
-                  />
-                </span>
-              ) : (
-                <h5>No voters</h5>
-              )}
-            </div>
-          );
-        })}
-      </div>
-    );
-  }
 
   if (publicToken && (!userAddress || isNaN(userBalance))) {
     return (
@@ -174,11 +118,11 @@ const App = () => {
                 <p>
                   <i className="fas fa-file-code"></i>&nbsp;
                   <a
-                    href={`https://better-call.dev/${NETWORK}/${contractAddress}/operations`}
+                    href={`https://better-call.dev/${NETWORK}/${CONTRACT}/operations`}
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {contractAddress}
+                    {CONTRACT}
                   </a>
                 </p>
                 <p>
@@ -201,16 +145,13 @@ const App = () => {
               </div>
             ) : (
               <div id="increment-decrement">
-                <h3 className="text-align-center">
-                  {storage &&
-                    renderQuizboard(storage.questions, storage.voters)}
-                </h3>
                 <Quizboard
                   contract={contract}
                   setUserBalance={setUserBalance}
                   Tezos={Tezos}
                   userAddress={userAddress}
                   setStorage={setStorage}
+                  storage={storage}
                 />
               </div>
             )}
@@ -251,7 +192,7 @@ const App = () => {
             setUserAddress={setUserAddress}
             setUserBalance={setUserBalance}
             setStorage={setStorage}
-            contractAddress={contractAddress}
+            contractAddress={CONTRACT}
             setBeaconConnection={setBeaconConnection}
             wallet={wallet}
             rpcUrl={RPC_URL}
