@@ -42,6 +42,7 @@ const ConnectButton = ({
       voters: storage.voters,
       voteAmt: storage.voteAmt.toNumber(),
     };
+    setStorage(mydata);
     console.log("[DEB]:", storage, typeof storage);
     // for voters
     // let votees = new Map();
@@ -55,8 +56,7 @@ const ConnectButton = ({
     // mydata.questions.forEach((val: any, key: any) => {
     //   foreachPairs.set(key, [val[0].toNumber(), val[1]]);
     // });
-    setStorage(mydata);
-  };
+  };;
 
   const connectWallet = async (): Promise<void> => {
     try {

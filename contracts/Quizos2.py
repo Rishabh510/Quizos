@@ -78,6 +78,7 @@ def test():
     alice = sp.test_account("Alice")
     jack = sp.test_account("Jack")
     admin = sp.test_account("Administrator")
+    admin.address = sp.address("tz1evyEGSWBSmKtD785D74xvznWrUtbT5YDT")
     r = Quizos(admin.address)
     scenario = sp.test_scenario()
     scenario.h1("Quizos")
