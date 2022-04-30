@@ -1,12 +1,15 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { TezosToolkit } from "@taquito/taquito";
+import { CONTRACT, NETWORK } from "../constants";
 
 const Transfers = ({
   Tezos,
+  userBalance,
   setUserBalance,
   userAddress,
 }: {
   Tezos: TezosToolkit;
+  userBalance: number;
   setUserBalance: Dispatch<SetStateAction<number>>;
   userAddress: string;
 }): JSX.Element => {

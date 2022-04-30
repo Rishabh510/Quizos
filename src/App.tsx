@@ -150,25 +150,53 @@ const App = () => {
             className={activeTab === "transfer" ? "active" : ""}
             onClick={() => setActiveTab("transfer")}
           >
-            Make a transfer
+            Manage account
           </div>
           <div
             id="contract"
             className={activeTab === "contract" ? "active" : ""}
             onClick={() => setActiveTab("contract")}
           >
-            Interact with a contract
+            Quiz Board
           </div>
         </div>
         <div id="dialog">
           <div id="content">
             {activeTab === "transfer" ? (
               <div id="transfers">
-                <h3 className="text-align-center">Make a transfer</h3>
+                <h3 className="text-align-center">Manage Account</h3>
                 <Transfers
                   Tezos={Tezos}
+                  userBalance={userBalance}
                   setUserBalance={setUserBalance}
                   userAddress={userAddress}
+                />
+                <p>
+                  <i className="fas fa-file-code"></i>&nbsp;
+                  <a
+                    href={`https://better-call.dev/${NETWORK}/${contractAddress}/operations`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {contractAddress}
+                  </a>
+                </p>
+                <p>
+                  <i className="fas fa-user"></i>&nbsp; {userAddress}
+                </p>
+                <p>
+                  <i className="fas fa-wallet"></i>&nbsp;
+                  {(userBalance / 1000000).toLocaleString("en-US")} ꜩ
+                </p>
+                <DisconnectButton
+                  wallet={wallet}
+                  rpcUrl={RPC_URL}
+                  setPublicToken={setPublicToken}
+                  setUserAddress={setUserAddress}
+                  setUserBalance={setUserBalance}
+                  setWallet={setWallet}
+                  setTezos={setTezos}
+                  setBeaconConnection={setBeaconConnection}
                 />
               </div>
             ) : (
@@ -176,7 +204,6 @@ const App = () => {
                 <h3 className="text-align-center">
                   {storage &&
                     renderQuizboard(storage.questions, storage.voters)}
-                  {/* Storage: <span>{storage}</span> */}
                 </h3>
                 <Quizboard
                   contract={contract}
@@ -187,34 +214,7 @@ const App = () => {
                 />
               </div>
             )}
-            <p>
-              <i className="fas fa-file-code"></i>&nbsp;
-              <a
-                href={`https://better-call.dev/${NETWORK}/${contractAddress}/operations`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {contractAddress}
-              </a>
-            </p>
-            <p>
-              <i className="fas fa-user"></i>&nbsp; {userAddress}
-            </p>
-            <p>
-              <i className="fas fa-wallet"></i>&nbsp;
-              {(userBalance / 1000000).toLocaleString("en-US")} ꜩ
-            </p>
           </div>
-          <DisconnectButton
-            wallet={wallet}
-            rpcUrl={RPC_URL}
-            setPublicToken={setPublicToken}
-            setUserAddress={setUserAddress}
-            setUserBalance={setUserBalance}
-            setWallet={setWallet}
-            setTezos={setTezos}
-            setBeaconConnection={setBeaconConnection}
-          />
         </div>
         <Footer />
       </div>
