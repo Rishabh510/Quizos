@@ -1,0 +1,6 @@
+import React from "react";
+
+const Header = () => {
+  return <div>Quizos</div>;
+};
+export default Header;
