@@ -1,6 +1,4 @@
 import { Dispatch, SetStateAction, useState, useEffect } from "react";
-import { TezosToolkit, MichelsonMap } from "@taquito/taquito";
-import { BigNumber } from "bignumber.js";
 import { BeaconWallet } from "@taquito/beacon-wallet";
 import {
   NetworkType,
@@ -56,7 +54,7 @@ const ConnectButton = ({
     // mydata.questions.forEach((val: any, key: any) => {
     //   foreachPairs.set(key, [val[0].toNumber(), val[1]]);
     // });
-  };;
+  };
 
   const connectWallet = async (): Promise<void> => {
     try {

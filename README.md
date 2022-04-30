@@ -1,26 +1,20 @@
-# Taquito Boilerplate in React
+# Quizos
 
-![Built with Taquito][logo]
+Answer Yes/No questions, win crypto!
 
-A minimal React setup for starting developing Tezos DApps quickly with Taquito.
+## Rules
 
-## Getting Started
+- Only Admin can post question for 10 Tez.
+- Participants can vote Yes/No (only once for a particular question) for 1 Tez which will then be added to the prize pool.
+- After the question is closed (only possible by Admin), 50% of the total profits will be distributed amongst the winners who voted the correct answer.
+              
+## Contract
 
-1. Make sure you have https://nodejs.org/ installed on your computer
-2. Create a new repository from taquito-boilerplate by clicking "Use this template".
-3. Clone your new repository:
+The contract can be found [here](https://better-call.dev/ithacanet/KT1WBNVYzsB6adhBSgxzhKXDe95utcRuHwGK/interact?entrypoint=add_question)
 
-   `git clone <YOUR_REPOSITORY_URL>`
+## Clone the repo
 
-3. Change your current working directory to the newly cloned repository directory.
-4. Install dependencies:
-
-   `npm install`
-
-5. Start development server:
-
-   `npm run start`
-
-6. Open https://localhost:3000 in your browser to see a sample application.
-
-[logo]: https://raw.githubusercontent.com/ecadlabs/taquito-boilerplate/master/assets/built-with-taquito.png "Built with Taquito"
+```
+git clone https://github.com/Rishabh510/Quizos
+npm install
+npm run start

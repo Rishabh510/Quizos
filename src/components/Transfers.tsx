@@ -1,6 +1,5 @@
 import { useState, Dispatch, SetStateAction } from "react";
 import { TezosToolkit } from "@taquito/taquito";
-import { CONTRACT, NETWORK } from "../constants";
 
 const Transfers = ({
   Tezos,
